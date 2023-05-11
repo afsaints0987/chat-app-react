@@ -1,0 +1,28 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "firstName": "Jane",
+            "lastName": "Doe",
+            "img": "https://randomuser.me/api/portraits/women/73.jpg"
+        },
+        {
+            "id": 2,
+            "firstName": "John",
+            "lastName": "Doe",
+            "img": "https://randomuser.me/api/portraits/men/38.jpg"
+        },
+        {
+            "id": 3,
+            "firstName": "Peter",
+            "lastName": "Barker",
+            "img": "https://randomuser.me/api/portraits/men/77.jpg"
+        },
+        {
+            "id": 4,
+            "firstName": "Jean",
+            "lastName": "Spark",
+            "img": "https://randomuser.me/api/portraits/women/2.jpg"
+        }
+    ]
+}
