@@ -1,23 +1,21 @@
 import Dashboard from "./pages/Dashboard";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
-import Login from "./pages/Login";
+import Login from "./pages/Login/Login";
 import Chatbox from "./components/Chatbox/Chatbox";
 
 const AppRoute = () => {
 
-  
-
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Dashboard/>}>
-          <Route path=":userId" element={<Chatbox/>}/>
-        </Route>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<Register/>}/>
-      </Routes>
-    </Router>
+    
+    <Routes>
+      <Route path="/" element={<Dashboard/>}>
+        <Route path=":userId" element={<Chatbox users={[]}/>} />
+      </Route>
+      <Route path="/login" element={<Login/>}/>
+      <Route path="/register" element={<Register/>}/>
+    </Routes>
+    
   )
 }
 

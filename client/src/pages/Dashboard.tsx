@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import Chatbox from "../components/Chatbox/Chatbox";
 import {data} from '../data/user.json'
 
+
 const Dashboard: React.FC = () => {
   return (
     <div>

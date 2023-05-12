@@ -34,11 +34,17 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
     console.log(`A client is connected ${socket.id}`)
 
-    socket.on('server-message', (data) => {
-        socket.broadcast.emit('client-message', data)
+    socket.on('join', (userId) => {
+        console.log("User joined:", userId)
     })
 
-    
+    socket.on("message", (messageData) => {
+        console.log("Received message:", messageData)
+    })
+
+    socket.on("disconnect", () => {
+        console.log(`A client is disconnected ${socket.id}`)
+    })
 })
 
 httpServer.listen(port, () => {
