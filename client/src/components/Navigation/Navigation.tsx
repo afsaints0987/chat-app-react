@@ -2,8 +2,15 @@ import React from 'react'
 import './navigation.scss'
 import * as FaIcons from 'react-icons/fa'
 import * as BsFill from 'react-icons/bs'
+import { useNavigate } from 'react-router-dom'
 
 const Navigation: React.FC = () => {
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    navigate('/login')
+  }
+
   return (
     <header className="container-flex text-light">
         <nav className="navbar navbar-expand-sm bg-success d-flex flex-column vh-100">
@@ -15,7 +22,9 @@ const Navigation: React.FC = () => {
                 <li className="nav-item list-item"><BsFill.BsFillGearFill/></li>
             </ul>
             <div className="fixed-bottom my-4 mx-5 w-25" id="logout">
-                <FaIcons.FaSignOutAlt/>
+                <span id="logout-btn" onClick={handleLogout}>
+                  <FaIcons.FaSignOutAlt/>
+                </span>
             </div>
         </nav>
     </header>

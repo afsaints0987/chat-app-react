@@ -1,3 +1,10 @@
+
+@mixin transition {
+    cursor: pointer;
+    color: #ffee00d5;
+    transition: all 0.2s ease-in-out
+}
+
 header {
     width: 150px;
 
@@ -6,12 +13,20 @@ header {
         .nav-item {
             font-size: 20px;
             margin: 2rem 0;
+
+            &:hover {
+                @include transition()
+            }
         }
     }
 
     #logout {
         font-size: 1.5rem;
         left: 10px;
+
+        #logout-btn:hover {
+            @include transition()
+        }
         
     }
 }
