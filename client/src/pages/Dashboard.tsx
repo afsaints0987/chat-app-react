@@ -1,5 +1,5 @@
 import Navigation from "../components/Navigation/Navigation";
-import Contacts from "../components/Contacts/Contacts";
+import Contacts from "../components/Users/Users";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Chatbox from "../components/Chatbox/Chatbox";

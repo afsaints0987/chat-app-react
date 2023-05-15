@@ -1,6 +1,6 @@
 import Dashboard from "./pages/Dashboard";
 import { Routes, Route } from "react-router-dom";
-import Register from "./pages/Register";
+import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import Chatbox from "./components/Chatbox/Chatbox";
 
