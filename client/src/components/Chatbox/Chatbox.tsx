@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./chatbox.scss";
 import { useParams } from "react-router-dom";
 import { UserTypes } from "../../types/UserTypes";
-import io, { Socket } from "socket.io-client";
+import io from "socket.io-client";
 
 interface UserProps {
   users: UserTypes[];
@@ -10,14 +10,34 @@ interface UserProps {
 
 interface MessageData {
   message: string;
-  objectId: string;
-  socketId: string;
+  timestamp: number;
+  sender: string;
+  recipientId?: string
 }
 
 const Chatbox: React.FC<UserProps> = ({ users }) => {
   const { userId } = useParams();
   const [user, setUser] = useState<UserTypes[]>([]);
+  const [sendMessage, setSendMessage] = useState<string>("")
+  const [message, setMessage] = useState<MessageData[]>([])
+  const [sentMessage, setSentMessage] = useState<MessageData[]>([])
+  
+  const socket = io('http://localhost:3001')
+  
 
+  const handleMessage = () => {
+    if(sendMessage !== ""){
+      const messageData = {
+        message: sendMessage,
+        timestamp: Date.now(),
+        sender: "user",
+        recipientId: userId
+      }
+      setMessage((prevMessage) => [...prevMessage, messageData])
+      socket.emit("receive-message", messageData)
+    }
+    setSendMessage("")
+  }
 
   useEffect(() => {
     const getUser = async () => {
@@ -31,6 +51,26 @@ const Chatbox: React.FC<UserProps> = ({ users }) => {
     getUser();
 
   }, [userId, users]);
+
+  useEffect(() => {
+    socket.on("send-message", (data) => {
+      const messageData = {
+        message: data.message,
+        timestamp: Date.now(),
+        sender: "receiver",
+        recipientId: userId
+      }
+      setSentMessage((prevMessage) => [...prevMessage, messageData])
+    })
+
+    return () => {
+      socket.off("send-message")
+    }
+  },[socket])
+
+  const mergedMessages = [...message, ...sentMessage];
+  const sortedMessages = mergedMessages.sort((a, b) => a.timestamp - b.timestamp)
+  const recipientMessages = sortedMessages.filter((m) => m.recipientId === userId)
 
   if (!user || user.length === 0) {
     return null;
@@ -56,15 +96,27 @@ const Chatbox: React.FC<UserProps> = ({ users }) => {
           </h4>
         </div>
       ))}
-      <div className="chat-body"></div>
+      <div className="chat-body">
+        {recipientMessages.map((m, index) => (
+          <div key={index} className={`d-flex justify-content-${m.sender === "user" ? "end" : "start"}`}>
+            <div className={`bg-${m.sender === "user" ? "primary" : "secondary"} m-4 p-2 text-light rounded w-25`}>
+              <p className="m-0">{m.message}</p>
+            </div>
+          </div>
+        ))}
+
+      </div>
       <div className="chat-footer">
         <div className="input-group">
           <input
+            
             type="text"
             placeholder="Type your message here..."
             className="form-control"
+            value={sendMessage}
+            onChange={(e) => setSendMessage(e.target.value)}
           />
-          <button className="btn btn-success">Send</button>
+          <button className="btn btn-success" onClick={handleMessage} type="button">Send</button>
         </div>
       </div>
     </div>

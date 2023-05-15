@@ -38,8 +38,9 @@ io.on('connection', (socket) => {
         console.log("User joined:", userId)
     })
 
-    socket.on("message", (messageData) => {
+    socket.on("receive-message", (messageData) => {
         console.log("Received message:", messageData)
+        socket.broadcast.emit("send-message", messageData)
     })
 
     socket.on("disconnect", () => {
