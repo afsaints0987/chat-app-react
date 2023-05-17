@@ -8,7 +8,7 @@ import avatar from '../../assets/avatar-user.png'
 
 const Register: React.FC = () => {
   const navigate = useNavigate()
-  const [imageUpload, setImageUpload] = useState<File | null>(null)
+  const [imageUpload, setImageUpload] = useState<string>("")
   const [registerUser, setRegisterUser] = useState({
     firstName: "",
     lastName: "",
@@ -20,7 +20,12 @@ const Register: React.FC = () => {
   const handleImageUpload = (e: any) => {
     const file = e.target.files && e.target.files[0]
     if(file) {
-      setImageUpload(file)
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        setImageUpload(base64String)
+      }
     }
   }
 
@@ -47,6 +52,8 @@ const Register: React.FC = () => {
       alert("Please fill up the form")
     } else {
       console.log("Registration Successful!", userData)
+
+      localStorage.setItem("userData", JSON.stringify(userData))
   
       setRegisterUser({
         firstName: "",
@@ -56,7 +63,7 @@ const Register: React.FC = () => {
         password: "",
       })
   
-      setImageUpload(null)
+      setImageUpload("")
 
       navigate('/login')
     }
@@ -73,7 +80,7 @@ const Register: React.FC = () => {
         </h3>
         <div className="mt-2">
           <div className="form-group d-flex flex-row align-items-center justify-content-between">
-            <img src={imageUpload ? URL.createObjectURL(imageUpload) : avatar} alt="avatar-user" className="rounded-circle bg-secondary" width="75" height="75"/>
+            <img src={imageUpload ? imageUpload : avatar} alt="avatar-user" className="rounded-circle bg-secondary" width="75" height="75"/>
             <input type="file" accept="image/*" id="image-upload" className="mx-2" onChange={handleImageUpload}/>
           </div>
             

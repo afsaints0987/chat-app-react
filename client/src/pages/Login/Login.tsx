@@ -1,15 +1,34 @@
 // import {useState} from 'react'
-import {useState} from 'react'
-import {Link} from 'react-router-dom'
+import {useState, useEffect} from 'react'
+import {Link, useNavigate} from 'react-router-dom'
 import * as IconName from 'react-icons/gi'
 import './login.scss'
 
+interface UserInfo {
+  username: string,
+  password: string,
+  firstName: string,
+  lastName: string,
+  email: string,
+  image: object
+}
+
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState<UserInfo>({} as UserInfo)
   const [loginUser, setLoginUser] = useState({
     username: "",
     password: "",
   });
+
+  useEffect(() => {
+    const userInfo = localStorage.getItem('userData');
+    if (userInfo) {
+      setUserInfo(JSON.parse(userInfo))
+    }
+  },[])
+
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -22,11 +41,22 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    console.log(loginUser)
-    setLoginUser({
-      username: "",
-      password: ""
-    })
+    const {username, password} = userInfo
+
+    if(username !== loginUser.username || password !== loginUser.password){
+      alert('Invalid username or password');
+    } else {
+      
+      console.log(loginUser)
+      setLoginUser({
+        username: "",
+        password: ""
+      })
+  
+      navigate('/dashboard')
+
+    }
+
   };
 
 

@@ -12,7 +12,7 @@ const Contacts: React.FC<ContactProps> = ({users}) => {
 
     const handleChatbox = (user: UserTypes) => {
         console.log(user)
-        navigate(`/${user.id}`)
+        navigate(`${user.id}`)
     }
 
   return (
